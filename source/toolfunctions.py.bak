@@ -10,7 +10,7 @@
 from string import *
 from shutil import *
 from toolutils import *
-commandlist=['trimlines','trimlinesleading','trimlinestrailing','win2dos','dos2win','rememptylines','replacestring']
+commandlist=['trimlines','trimlinesleading','trimlinestrailing','win2unix','unix2win','rememptylines','replacestring']
 
 
 def usage(execname):
@@ -110,7 +110,7 @@ def trimlinestrailing(filename,arglist):
 
 
 
-def win2dos(filename,arglist):
+def win2unix(filename,arglist):
     #print "trimlines function with args"+str(arglist)
     try:
         f=open(filename,'r+w')
@@ -147,7 +147,7 @@ def win2dos(filename,arglist):
 
 
 
-def dos2win(filename,arglist):
+def unix2win(filename,arglist):
     #print "trimlines function with args"+str(arglist)
     try:
         f=open(filename,'r+w')
@@ -227,6 +227,7 @@ def replacestring(filename,arglist):
     #print "trimlines function with args"+str(arglist)
     if len(arglist)<2:
         print "Subcommand error. Please specify original string and replacement string"
+        return None
     origstring=   str(arglist[0])
     replstring=   str(arglist[1])
         
