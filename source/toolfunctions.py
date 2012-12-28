@@ -10,7 +10,7 @@
 from string import *
 from shutil import *
 from toolutils import *
-commandlist=['trimlines','trimlinesleading','trimlinestrailing','win2unix','unix2win','rememptylines','replacestring']
+commandlist=['trimlines','trimlinesleading','trimlinestrailing','win2unix','unix2win','rememptylines','replacestring','remnthline','remlinerange','remnlinesfrom']
 
 
 def usage(execname):
@@ -241,7 +241,7 @@ def replacestring(filename,arglist):
     for line in linelist:
         linelist_stringreplaced.append(rstrip(line,'\n\r').replace(origstring,replstring))
 
-    processestext='\r\n'.join(linelist_stringreplaced)
+    processestext='\n'.join(linelist_stringreplaced)
     
     origfilename=f.name
     f.close()
@@ -263,3 +263,158 @@ def replacestring(filename,arglist):
         return 1 
     else:
         return None
+
+
+def remnthline(filename,arglist):
+    #print "trimlines function with args"+str(arglist)
+    if len(arglist)<1:
+        print "Subcommand error. Please specify the line number to remove"
+        return None
+    try:
+        linenum= int(arglist[0])
+    except:
+        print "Error: Expected number"
+        return None
+
+        
+    try:
+        f=open(filename,'r+w')
+    except IOError as e:
+        print 'Unable to open file'
+        return None
+    linelist=f.readlines()
+    linelist_lineremoved=[]
+    linecount=0
+    for line in linelist:
+        linecount=linecount+1
+        if(linecount != linenum):
+            linelist_lineremoved.append(rstrip(line,'\n\r'))
+
+    processestext='\n'.join(linelist_lineremoved)
+    
+    origfilename=f.name
+    f.close()
+    try:
+        tmpf=open("/tmp/file.txt","w")
+    except:
+        print "Unable to open temp file for writing"
+        return None
+    
+    print "|\n"+processestext+"\n|"
+    if processestext:
+        try:
+            tmpf.write(processestext)
+        except Exception,e:
+            print "Write Error:"+str(e)    
+            return None
+        move(tmpf.name,origfilename)
+        tmpf.close()
+        return 1 
+    else:
+        return None
+
+
+
+
+def remlinerange(filename,arglist):
+    #print "trimlines function with args"+str(arglist)
+    if len(arglist)<2:
+        print "Subcommand error. Please specify the start line number and   stop line number  of line range to remove"
+        return None
+    try:
+        linenum_start= int(arglist[0])
+        linenum_end= int(arglist[1])
+    except:
+        print "Error: Expected number"
+        return None
+    if (linenum_start >  linenum_end):  
+        print "start line number should be less than stop line number"
+        return None        
+    try:
+        f=open(filename,'r+w')
+    except IOError as e:
+        print 'Unable to open file'
+        return None
+    linelist=f.readlines()
+    linelist_linerangeremoved=[]
+    linecount=0
+    for line in linelist:
+        linecount=linecount+1
+        if ((linecount < linenum_start) or (linecount > linenum_end)) :
+            linelist_linerangeremoved.append(rstrip(line,'\n\r'))
+
+    processestext='\n'.join(linelist_linerangeremoved)
+    
+    origfilename=f.name
+    f.close()
+    try:
+        tmpf=open("/tmp/file.txt","w")
+    except:
+        print "Unable to open temp file for writing"
+        return None
+    
+    print "|\n"+processestext+"\n|"
+    if processestext:
+        try:
+            tmpf.write(processestext)
+        except Exception,e:
+            print "Write Error:"+str(e)    
+            return None
+        move(tmpf.name,origfilename)
+        tmpf.close()
+        return 1 
+    else:
+        return None
+#','remnlinesfrom
+
+
+def remnlinesfrom(filename,arglist):
+    #print "trimlines function with args"+str(arglist)
+    if len(arglist)<2:
+        print "Subcommand error. Please specify the start line number and   stop line number  of line range to remove"
+        return None
+    try:
+        linenum_start= int(arglist[0])
+        numliestoremove= int(arglist[1])
+    except:
+        print "line number argument is not an number"
+        return None
+    if (numliestoremove<=0):  
+        print "Error: Expected number"
+        return None        
+    try:
+        f=open(filename,'r+w')
+    except IOError as e:
+        print 'Unable to open file'
+        return None
+    linelist=f.readlines()
+    linelist_linerangeremoved=[]
+    linecount=0
+    for line in linelist:
+        linecount=linecount+1
+        if ((linecount < linenum_start) or (linecount > linenum_start+numliestoremove-1)) :
+            linelist_linerangeremoved.append(rstrip(line,'\n\r'))
+
+    processestext='\n'.join(linelist_linerangeremoved)
+    
+    origfilename=f.name
+    f.close()
+    try:
+        tmpf=open("/tmp/file.txt","w")
+    except:
+        print "Unable to open temp file for writing"
+        return None
+    
+    print "|\n"+processestext+"\n|"
+    if processestext:
+        try:
+            tmpf.write(processestext)
+        except Exception,e:
+            print "Write Error:"+str(e)    
+            return None
+        move(tmpf.name,origfilename)
+        tmpf.close()
+        return 1 
+    else:
+        return None
+
