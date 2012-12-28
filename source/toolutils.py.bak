@@ -1,4 +1,3 @@
-from string import *
 
 def containsotherthan(str, set):
     """Check whether 'str' contains ANY of the chars in 'set'"""
