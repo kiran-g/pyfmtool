@@ -27,3 +27,19 @@ def trimfile(f,type):
                 processedlist.append(line)
         print "trimfile <<"+line+">>"        
     return '\n'.join(processedlist)    
+
+    
+
+def tr(trstr,strng):
+    if len(trstr)>len(strng):
+        return strng
+    if not trstr in strng:
+        return strng
+    if count(strng,trstr) == 1:
+        return strng
+    while count(strng,trstr) > 1:
+        oldstr=strng
+        strng=strng.replace(trstr+trstr,trstr)
+        if strng==oldstr:
+            break
+    return    strng 

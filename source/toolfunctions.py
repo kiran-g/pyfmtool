@@ -10,7 +10,7 @@
 from string import *
 from shutil import *
 from toolutils import *
-commandlist=['trimlines','trimlinesleading','trimlinestrailing','win2unix','unix2win','rememptylines','replacestring','remnthline','remlinerange','remnlinesfrom']
+commandlist=['trimlines','trimlinesleading','trimlinestrailing','win2unix','unix2win','rememptylines','replacestring','remnthline','remlinerange','remnlinesfrom','translate']
 
 
 def usage(execname):
@@ -418,3 +418,48 @@ def remnlinesfrom(filename,arglist):
     else:
         return None
 
+
+
+def translate(filename,arglist):
+    #print "trimlines function with args"+str(arglist)
+    if len(arglist)<1:
+        print "Subcommand error. Please specify the string to be truncated"
+        return None
+    trun_string=arglist[0].strip("\n")
+
+    
+    try:
+        f=open(filename,'r+w')
+    except IOError as e:
+        print 'Unable to open file'
+        return None
+    linelist=f.readlines()
+    linelist_linetruncated=[]
+    linecount=0
+    for line in linelist:
+        if trun_string in line:    
+            linelist_linetruncated.append(tr(trun_string,line.strip('\n')))
+        else:
+            linelist_linetruncated.append(line.strip('\n'))
+    processestext='\n'.join(linelist_linetruncated)
+    
+    origfilename=f.name
+    f.close()
+    try:
+        tmpf=open("/tmp/file.txt","w")
+    except:
+        print "Unable to open temp file for writing"
+        return None
+    
+    print "|\n"+processestext+"\n|"
+    if processestext:
+        try:
+            tmpf.write(processestext)
+        except Exception,e:
+            print "Write Error:"+str(e)    
+            return None
+        move(tmpf.name,origfilename)
+        tmpf.close()
+        return 1 
+    else:
+        return None
