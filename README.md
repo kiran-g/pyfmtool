@@ -10,6 +10,6 @@ CLI Usage
 
 Library Usage
 =============
-  With toolutils.py in the PWD call the following in your python file: 
+  With toolfunctions.py  in the PWD call the following in your python file: 
 
     import toolfunction
